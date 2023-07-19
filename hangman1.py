@@ -16,6 +16,7 @@ def main():
         print("You lose")
     else:
         print("You win!")
+    print("hi")
     
     
 #user sets lowercase word
