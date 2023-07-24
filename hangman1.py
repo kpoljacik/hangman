@@ -1,6 +1,5 @@
 #hangman
 
-#need to disallow duplicate letter guesses
 #update win condition
 
 def main():
@@ -16,7 +15,6 @@ def main():
         print("You lose")
     else:
         print("You win!")
-    print("hi")
     
     
 #user sets lowercase word
@@ -47,14 +45,18 @@ def word_stage():
     print(string_to_print)
     return string_to_print
 
-#guesser inputs letter
+#guesser inputs letter, letter must meet criteria
 def get_guess():
         print("Incorrect guesses:" + str(incorrect_guesses))
-        print("Enter your letter:")
-        guess = input("> ").lower()
-        if len(guess) > 1:
-            print("Please guess only one letter")
-        return str(guess)
+        while True:
+            print("Enter your letter:")
+            guess = input("> ").lower()
+            if len(guess) > 1 or not guess.isalpha():
+                print("Please guess only one letter")
+            elif guess in letters_guessed:
+                print("You already guessed this letter. Choose again.")
+            else:
+                return guess
     
 #adds guesses to guess list and incorrect guess list
 def check_guess(letter, hangman_word):
