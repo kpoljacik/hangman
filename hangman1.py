@@ -1,21 +1,23 @@
 #hangman
 
 #update win condition
+#dash is problematic "it's too clever"
+#word stage function do be doing too much
+#letters in letters_guessed is a win
 
 def main():
     hangman_word = split_word(word)
-    length_hangman_word = word_length(hangman_word)
-    while len(incorrect_guesses) < 6 and "_ " in word_stage():
+    allowed_guesses = get_allowed_guesses()
+    while len(incorrect_guesses) < allowed_guesses and "_ " in word_stage():
         make_stage()
         letter = get_guess()
         check_guess(letter, hangman_word)
         
     make_stage()
-    if len(incorrect_guesses) == 6:
+    if len(incorrect_guesses) == allowed_guesses:
         print("You lose")
     else:
         print("You win!")
-    
     
 #user sets lowercase word
 word = "parachute"
@@ -28,10 +30,6 @@ incorrect_guesses = []
 def split_word(word):
     hangman_word = [*word]
     return hangman_word
-
-#returns the length of the word
-def word_length(hangman_word):
-    return len(hangman_word)
 
 #generates the spaces for the word, e.g. _ _ _ _
 def word_stage():
@@ -67,6 +65,11 @@ def check_guess(letter, hangman_word):
     elif letter in hangman_word:
         print("""Good guess!
         """)
+
+#return the number of guesses that are allowed based on stages
+def get_allowed_guesses():
+    return len(stages) - 1
+
 
 #prints stage with body based on number of incorrect guesses      
 def make_stage():
