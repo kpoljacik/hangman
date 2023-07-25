@@ -1,7 +1,13 @@
 #hangman
 
+#user sets lowercase word
+hangman_word = "parachute"
+
+#list keeping track of letters guessed
+letters_guessed = []
+incorrect_guesses = []
+
 def main():
-    hangman_word = split_word(word)
     while not game_lost() and not game_won():
         make_stage()
         word_stage()
@@ -13,24 +19,32 @@ def main():
         print("You lose")
     else:
         print("You win!")
-    
-#user sets lowercase word
-word = "parachute"
 
-#list keeping track of letters guessed
-letters_guessed = []
-incorrect_guesses = []
+#returns true or false depending on if number of guesses exceeds number of hangman body parts
+def game_lost():
+    allowed_guesses = get_allowed_guesses()
+    return len(incorrect_guesses) >= allowed_guesses
 
-#splits word into list of letters
-def split_word(word):
-    hangman_word = [*word]
-    return hangman_word
+#return the number of guesses that are allowed based on stages
+def get_allowed_guesses():
+    return len(stages) - 1
+
+#returns true or false depending on if all letters guessed
+def game_won():
+    for character in hangman_word:
+        if character not in letters_guessed:
+            return False
+    return True
+
+#prints stage with body based on number of incorrect guesses      
+def make_stage():
+    print(stages[len(incorrect_guesses)])
 
 #generates the spaces for the word, e.g. _ _ _ _
 def word_stage():
     string_to_print = ""
     # if the character is in the guessed_list, use the character, otherwise use an underscore
-    for character in word:
+    for character in hangman_word:
         if character in letters_guessed:
             string_to_print += character + " "
         else:
@@ -54,32 +68,12 @@ def get_guess():
 #adds guesses to guess list and incorrect guess list
 def check_guess(letter, hangman_word):
     letters_guessed.append(letter)
-    if letter not in word:
+    if letter not in hangman_word:
         incorrect_guesses.append(letter)
         print("Sorry, bad guess. Try again.")
-    elif letter in hangman_word:
+    else:
         print("""Good guess!
         """)
-
-#returns true or false depending on if all letters guessed
-def game_won():
-    for character in word:
-        if character not in letters_guessed:
-            return False
-    return True
-    
-def game_lost():
-    allowed_guesses = get_allowed_guesses()
-    return len(incorrect_guesses) >= allowed_guesses
-
-#return the number of guesses that are allowed based on stages
-def get_allowed_guesses():
-    return len(stages) - 1
-
-#prints stage with body based on number of incorrect guesses      
-def make_stage():
-    print(stages[len(incorrect_guesses)])
-
 
 stage = """
              ____
