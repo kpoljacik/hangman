@@ -1,20 +1,15 @@
 #hangman
 
-#update win condition
-#dash is problematic "it's too clever"
-#word stage function do be doing too much
-#letters in letters_guessed is a win
-
 def main():
     hangman_word = split_word(word)
-    allowed_guesses = get_allowed_guesses()
-    while len(incorrect_guesses) < allowed_guesses and "_ " in word_stage():
+    while not game_lost() and not game_won():
         make_stage()
+        word_stage()
         letter = get_guess()
         check_guess(letter, hangman_word)
         
     make_stage()
-    if len(incorrect_guesses) == allowed_guesses:
+    if game_lost():
         print("You lose")
     else:
         print("You win!")
@@ -41,7 +36,7 @@ def word_stage():
         else:
             string_to_print += "_ "
     print(string_to_print)
-    return string_to_print
+    print("\n")
 
 #guesser inputs letter, letter must meet criteria
 def get_guess():
@@ -66,10 +61,20 @@ def check_guess(letter, hangman_word):
         print("""Good guess!
         """)
 
+#returns true or false depending on if all letters guessed
+def game_won():
+    for character in word:
+        if character not in letters_guessed:
+            return False
+    return True
+    
+def game_lost():
+    allowed_guesses = get_allowed_guesses()
+    return len(incorrect_guesses) >= allowed_guesses
+
 #return the number of guesses that are allowed based on stages
 def get_allowed_guesses():
     return len(stages) - 1
-
 
 #prints stage with body based on number of incorrect guesses      
 def make_stage():
@@ -83,7 +88,8 @@ stage = """
                  |
                  |
                  |
-              ------- """
+              ------- 
+              """
               
     
 head = """
@@ -93,7 +99,8 @@ head = """
                  |
                  |
                  |
-              ------- """
+              ------- 
+              """
               
     
 body = """
@@ -103,7 +110,8 @@ body = """
             |    |
                  |
                  |
-              ------- """
+              ------- 
+              """
 
 arm1 = """
              ____
@@ -112,7 +120,8 @@ arm1 = """
             |    |
                  |
                  |
-              ------- """
+              ------- 
+              """
 
 arm2 = """
              ____
@@ -121,7 +130,8 @@ arm2 = """
             |    |
                  |
                  |
-              ------- """
+              ------- 
+              """
               
 
 leg1 = """
@@ -131,7 +141,8 @@ leg1 = """
             |    |
            /     |
                  |
-              ------- """
+              ------- 
+              """
     
 leg2 = """
              ____
@@ -140,7 +151,8 @@ leg2 = """
             |    |
            / \   |
                  |
-              ------- """
+              ------- 
+              """
 
 stages = [stage, head, body, arm1, arm2, leg1, leg2]
 
